@@ -28,7 +28,7 @@ public class Auction {
         return productDescription;
     }
 
-    public float getMinBid() {
+    public int getMinBid() {
         return minBid;
     }
 

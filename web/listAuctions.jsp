@@ -43,18 +43,12 @@
                         <th>${auctionDescription}</th>
                         <th>${auctionMinBid}</th>
                         <th>${auctionCurrentBid}</th>
-                        <%
-                        if(auction.isOpened()){
-                            %>
-                            <th>
-                                <form action="watchAuction.jsp" method="get">
-                                    <input type="hidden" name="auctionId" value="${auctionId}" readonly="readonly"  />
-                                    <input type="submit" value="Acompanhar" />
-                                </form>
-                            </th>
-                            <%                                    
-                        } 
-                        %>
+                        <th>
+                            <form action="watchAuction.jsp" method="get">
+                                <input type="hidden" name="auctionId" value="${auctionId}" readonly="readonly"  />
+                                <input type="submit" value="Acompanhar" />
+                            </form>
+                        </th>
                     </tr><%
                 }
             }

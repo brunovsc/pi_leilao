@@ -61,15 +61,15 @@
             </tbody>
         </table>
         
-            
+          
+        <h1></h1>  
         <form name="register_auction" action="registerAuction.jsp">
-            <table border="0">
-                <tbody>
-                <tr>
-                    <td><input type="submit" value="Eu vou fazer um" name="registerAuction" /></td>
-                </tr>
-                </tbody>
-            </table>
+            <input type="submit" value="Eu vou fazer um" name="registerAuction" />       
+        </form>
+            
+        <h1></h1>
+        <form action="logout.jsp">
+            <input type="submit" value="Sair" />
         </form>
     </body>
 </html>

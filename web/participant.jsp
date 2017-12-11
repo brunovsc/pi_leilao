@@ -13,10 +13,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Participante</title>
     </head>
     <body>
-        <h1>Pagina de participante</h1>
+        <%
+        pageContext.setAttribute("username", request.getSession().getAttribute("username"));
+        %>
+        <h1>Pagina de Participante: ${username}</h1>
         <h2>Leilões consultados</h2>
         <table border="1">
             <thead>

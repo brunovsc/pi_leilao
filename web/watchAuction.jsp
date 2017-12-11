@@ -21,10 +21,26 @@
             auctions = new ArrayList<Auction>();
         }
         Auction a = AuctionsDAO.getInstance().getAuctionWithId(Integer.parseInt(request.getParameter("auctionId")));
-        auctions.add(a);
-        session.setAttribute("auctions", auctions);        
+        boolean isWatching = false;
+        for(Auction auc : auctions){
+            if(auc.getAuctionId() == a.getAuctionId()){
+                isWatching = true;
+                break;
+            }
+        }
+        if(!isWatching){
+            auctions.add(a);   
+            session.setAttribute("auctions", auctions);  
+            %>
+            <h1>Leilão adicionado à lista de leilões consultados.</h1>
+            <meta http-equiv="Refresh" content="3;url=listAuctions.jsp">
+            <%
+        } else { 
+            %>
+            <h1>Leilão já está em acompanhamento.</h1>
+            <meta http-equiv="Refresh" content="3;url=listAuctions.jsp">
+            <%
+        }
         %>
-        <h1>Leilão adicionado à lista de leilões consultados.</h1>
-        <meta http-equiv="Refresh" content="3;url=listAuctions.jsp">
     </body>
 </html>

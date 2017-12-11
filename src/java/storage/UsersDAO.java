@@ -98,6 +98,7 @@ public class UsersDAO {
             savedSessions = new ArrayList<>();
         }
         savedSessions.add(username);
+        request.getSession().setAttribute("username", username);
         context.setAttribute("savedSessions", savedSessions);        
     }
     
