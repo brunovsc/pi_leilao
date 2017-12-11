@@ -6,9 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
 
 public class UsersDAO {
 
@@ -85,5 +89,24 @@ public class UsersDAO {
             Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+    }
+    
+    public void saveSession(String username, HttpServletRequest request) {
+        ServletContext context = request.getServletContext();
+        ArrayList<String> savedSessions = (ArrayList<String>)context.getAttribute("savedSessions");
+        if(savedSessions == null){
+            savedSessions = new ArrayList<>();
+        }
+        savedSessions.add(username);
+        context.setAttribute("savedSessions", savedSessions);        
+    }
+    
+    public void removeSession(String username, HttpServletRequest request) {
+        ServletContext context = request.getServletContext();
+        ArrayList<String> savedSessions = (ArrayList<String>)context.getAttribute("savedSessions");
+        if(savedSessions != null){
+            savedSessions.remove(username);
+        }
+        context.setAttribute("savedSessions", savedSessions);            
     }
 }

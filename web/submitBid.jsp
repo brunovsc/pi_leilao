@@ -1,6 +1,6 @@
 <%-- 
-    Document   : openAuction
-    Created on : 11/12/2017, 15:07:23
+    Document   : submitBid
+    Created on : 11/12/2017, 18:49:14
     Author     : Bruno
 --%>
 

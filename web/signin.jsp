@@ -15,12 +15,13 @@
     </head>
     <body>
         <%
-            String password = UsersDAO.getInstance().getUserWithName("bruno"/*request.getParameter("user")*/);
+            String password = UsersDAO.getInstance().getUserWithName(request.getParameter("user"));
             if(password != null){
-                if(true/*request.getParameter("password").equals(password)*/){
-                    if(UsersDAO.getInstance().isUserAdmin("bruno"/*request.getParameter("user")*/)){
+                if(request.getParameter("password").equals(password)){
+                    if(UsersDAO.getInstance().isUserAdmin(request.getParameter("user"))){
                         %><jsp:forward page = "admin.jsp" /><%
                     } else {
+                        UsersDAO.getInstance().saveSession(request.getParameter("user"), request);
                         %><jsp:forward page = "participant.jsp" /><%
                     }
                 } else { 

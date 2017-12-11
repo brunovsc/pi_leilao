@@ -4,6 +4,7 @@
     Author     : Bruno
 --%>
 
+<%@page import="storage.UsersDAO"%>
 <%@page import="storage.ParticipantsDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -21,6 +22,7 @@
             if(participantId == null){
                 %><h1>${param.message}</h1><%
             } else {
+                UsersDAO.getInstance().saveSession(username, request);
                 %>
                 <h1>Usuario participante "${param.name}" registrado com sucesso.</h1>
                 <meta http-equiv="Refresh" content="3;url=participant.jsp">

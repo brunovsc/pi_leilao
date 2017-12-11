@@ -82,4 +82,37 @@ public class AuctionsDAO {
             return auctions;
         }
     }
+    
+    public boolean updateAuctionIdWithStatus(int auctionId, boolean status){
+        try (Connection connection = new JDBC4Connection(host, port, info, dbName, null)) {
+            Statement st = connection.createStatement();
+            String query = "UPDATE " + tableName + " SET opened = " + (status ? "0" : "1") + " WHERE auctionId = " + auctionId;
+            int rowsAffected = st.executeUpdate(query);
+            if(rowsAffected > 0) return true;
+            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public Auction getAuctionWithId(int auctionId){
+        try (Connection connection = new JDBC4Connection(host, port, info, dbName, null)) {
+            Statement st = connection.createStatement();
+            String query = "SELECT * " + " FROM " + tableName + " WHERE auctionId = " + auctionId;
+            ResultSet resultSet = st.executeQuery(query);
+            while(resultSet.next()){
+                int newAuctionId = resultSet.getInt("auctionId");
+                String productDescription = resultSet.getString("productDescription");
+                int minimumBid = resultSet.getInt("minimumBid");
+                int currentBid = resultSet.getInt("currentBid");
+                boolean opened = resultSet.getBoolean("opened");
+                return new Auction(newAuctionId, productDescription, minimumBid, currentBid, opened);
+            }
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 }
