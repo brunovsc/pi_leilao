@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,4 +76,23 @@ public class BidsDAO {
         }
     }
       
+    
+    public ArrayList<Bid> getBidsForAuctionId(int auctionId){
+        ArrayList<Bid> bids = new ArrayList<>();
+        try (Connection connection = new JDBC4Connection(host, port, info, dbName, null)) {
+            Statement st = connection.createStatement();
+            String query = "SELECT * " + " FROM " + tableName + " WHERE auctionId = " + auctionId;
+            ResultSet resultSet = st.executeQuery(query);
+            while(resultSet.next()){
+                int bidId = resultSet.getInt("bidId");
+                String username = resultSet.getString("username");
+                int bidValue = resultSet.getInt("bidValue");
+                bids.add(new Bid(bidId, auctionId, username, bidValue));
+            }
+            return bids;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return bids;
+        }
+    }
 }

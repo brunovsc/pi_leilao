@@ -24,9 +24,10 @@
             <h1>O leilão para esse item não está aberto.</h1>
             <meta http-equiv="Refresh" content="3;url=participant.jsp">
             <%
+            return;
         }
         int currentBid = auction.getBidValue();
-        int newBid = currentBid + 10;
+        int newBid = auction.nextBidValue();
         String username = (String)request.getSession().getAttribute("username");
         boolean success = AuctionsDAO.getInstance().updateBidValueOnAuctionWithId(auction.getAuctionId(), newBid);
         Bid bid = BidsDAO.getInstance().createBidForAuctionWithBidValueAndUsername(auction.getAuctionId(), newBid, username);

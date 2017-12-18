@@ -29,7 +29,7 @@
                     <h1>Senha inválida!</h1>
                 <% }
             } else { %>
-                <h1>Participante ${param.user} não cadastrado!</h1>
+                <h1>Usuário ${param.user} não cadastrado!</h1>
             <%
             }
             %>

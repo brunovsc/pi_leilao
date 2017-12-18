@@ -2,6 +2,7 @@ package storage;
 
 import com.mysql.jdbc.JDBC4Connection;
 import domain.Auction;
+import domain.Bid;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -89,7 +90,9 @@ public class AuctionsDAO {
                 int minimumBid = resultSet.getInt("minimumBid");
                 int currentBid = resultSet.getInt("currentBid");
                 boolean opened = resultSet.getBoolean("opened");
-                auctions.add(new Auction(auctionId, productDescription, minimumBid, currentBid, opened));
+                Auction auction = new Auction(auctionId, productDescription, minimumBid, currentBid, opened);
+                auction.setBids(BidsDAO.getInstance().getBidsForAuctionId(auctionId));
+                auctions.add(auction);
             }
             return auctions;
         } catch (SQLException ex) {
@@ -121,7 +124,9 @@ public class AuctionsDAO {
                 int minimumBid = resultSet.getInt("minimumBid");
                 int currentBid = resultSet.getInt("currentBid");
                 boolean opened = resultSet.getBoolean("opened");
-                return new Auction(newAuctionId, productDescription, minimumBid, currentBid, opened);
+                Auction auction = new Auction(newAuctionId, productDescription, minimumBid, currentBid, opened);
+                auction.setBids(BidsDAO.getInstance().getBidsForAuctionId(auctionId));
+                return auction;
             }
             return null;
         } catch (SQLException ex) {

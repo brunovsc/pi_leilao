@@ -72,5 +72,9 @@ public class Auction {
     public void setIsOpened(boolean isOpened) {
         this.isOpened = isOpened;
     }
+
+    public void setBids(ArrayList<Bid> bids) {
+        this.bids = bids;
+    }
     
 }
