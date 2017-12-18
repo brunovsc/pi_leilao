@@ -4,6 +4,7 @@
     Author     : Bruno
 --%>
 
+<%@page import="storage.UsersDAO"%>
 <%@page import="storage.AuctionsDAO"%>
 <%@page import="domain.Auction"%>
 <%@page import="java.util.ArrayList"%>

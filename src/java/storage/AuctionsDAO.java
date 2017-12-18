@@ -3,9 +3,9 @@ package storage;
 import com.mysql.jdbc.JDBC4Connection;
 import domain.Auction;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -49,16 +49,31 @@ public class AuctionsDAO {
         return auctionsDAOInstance;
     } 
     
-    public String createAuction(String productDescription, int minimumBid, int currentBid, boolean isOpened){
+    public Auction createAuction(String productDescription, int minimumBid, int currentBid, boolean isOpened){
         try (Connection connection = new JDBC4Connection(host, port, info, dbName, null)) {
-            Statement statement = connection.createStatement();
             String openedString = isOpened ? "1" : "0";
             String st = "INSERT INTO " + tableName + " (productDescription, minimumBid, currentBid, opened) VALUES('" + productDescription + "'," + minimumBid + "," + currentBid + ",'" + openedString + "')";
-            statement.execute(st);
-            return "";
+            
+            PreparedStatement statement = connection.prepareStatement(st,Statement.RETURN_GENERATED_KEYS);
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating auction failed, no rows affected.");
+            }
+            Auction auction;
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    auction = new Auction(generatedKeys.getInt(1), productDescription, minimumBid, currentBid, isOpened);
+                }
+                else {
+                    auction = null;
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
+            return auction;
         } catch (SQLException ex) {
             Logger.getLogger(AuctionsDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return "Erro inesperado. Tente novamente mais tarde.";
+            return null;
         }
     }
     
@@ -86,10 +101,9 @@ public class AuctionsDAO {
     public boolean updateAuctionIdWithStatus(int auctionId, boolean status){
         try (Connection connection = new JDBC4Connection(host, port, info, dbName, null)) {
             Statement st = connection.createStatement();
-            String query = "UPDATE " + tableName + " SET opened = " + (status ? "0" : "1") + " WHERE auctionId = " + auctionId;
+            String query = "UPDATE " + tableName + " SET opened = " + (status ? "1" : "0") + " WHERE auctionId = " + auctionId;
             int rowsAffected = st.executeUpdate(query);
-            if(rowsAffected > 0) return true;
-            return false;
+            return rowsAffected > 0;
         } catch (SQLException ex) {
             Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -113,6 +127,18 @@ public class AuctionsDAO {
         } catch (SQLException ex) {
             Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }
+    }
+    
+    public boolean updateBidValueOnAuctionWithId(int auctionId, int bidValue){
+        try (Connection connection = new JDBC4Connection(host, port, info, dbName, null)) {
+            Statement st = connection.createStatement();
+            String query = "UPDATE " + tableName + " SET currentBid = " + bidValue + " WHERE auctionId = " + auctionId;
+            int rowsAffected = st.executeUpdate(query);
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
 }

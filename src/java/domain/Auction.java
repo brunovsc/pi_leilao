@@ -36,8 +36,9 @@ public class Auction {
         return bids;
     }
     
-    public void addBid(String bidId, int bidValue){
-        bids.add(new Bid(this.auctionId, bidId, bidValue));
+    public void addBid(Bid bid){
+        this.bidValue = bid.getBidValue();
+        this.bids.add(bid);
     }
     
     public void start(){
@@ -56,8 +57,20 @@ public class Auction {
         return bidValue;
     }
     
+    public int nextBidValue() {
+        if(bidValue == 0){
+            return minBid == 0 ? 10 : minBid;
+        } else {
+            return bidValue + 10;
+        }
+    }
+    
     public boolean isOpened() {
         return isOpened;
+    }
+
+    public void setIsOpened(boolean isOpened) {
+        this.isOpened = isOpened;
     }
     
 }

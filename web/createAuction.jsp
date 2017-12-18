@@ -4,6 +4,8 @@
     Author     : a11311BCC009
 --%>
 
+<%@page import="domain.Auction"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="storage.AuctionsDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -19,11 +21,14 @@
             %>Descrição inválida<%
         } else {
             int initialBid = Integer.parseInt(request.getParameter("auctionInitialBid"));
-            String message = AuctionsDAO.getInstance().createAuction(description, initialBid, initialBid, false);
-            if(message.length() > 0){
-                %><h1>${param.message}</h1><%
-            } else {
+            Auction auction = AuctionsDAO.getInstance().createAuction(description, initialBid, 0, false);
+            if(auction != null){
+                ArrayList<Auction> auctions = (ArrayList<Auction>)getServletContext().getAttribute("auctions");
+                auctions.add(auction);
+                getServletContext().setAttribute("auctions", auctions);
                 %><h1>Leilão registrado com sucesso</h1><%
+            } else {
+                %><h1>Erro inesperado. Tente novamente mais tarde.</h1><%
             }
             %><meta http-equiv="Refresh" content="3;url=admin.jsp"><%
         }   

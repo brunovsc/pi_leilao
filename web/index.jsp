@@ -4,6 +4,9 @@
     Author     : a11311BCC009
 --%>
 
+<%@page import="domain.Auction"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="storage.AuctionsDAO"%>
 <%@page import="storage.ManagerDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,7 +16,11 @@
         <title>Leilão</title>
     </head>
     <body>
-        <%ManagerDAO.getInstance();%>
+        <%
+            ManagerDAO.getInstance();
+            ArrayList<Auction> auctions = AuctionsDAO.getInstance().getAuctions();
+            getServletContext().setAttribute("auctions", auctions);
+        %>
         <form action="login.jsp">
             <input type="submit" value="Login" />
         </form>

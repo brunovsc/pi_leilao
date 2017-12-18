@@ -27,7 +27,7 @@
             </thead>
             <tbody>
             <%
-            ArrayList<Auction> auctions = AuctionsDAO.getInstance().getAuctions();
+            ArrayList<Auction> auctions = (ArrayList<Auction>)getServletContext().getAttribute("auctions");
             if(auctions.size() == 0){
                 %><h3>Nenhum leilão consultado anteriormente.</h3><%
             } else {

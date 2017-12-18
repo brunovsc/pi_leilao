@@ -17,6 +17,7 @@
     </head>
     <body>
         <%
+        String username = (String)request.getSession().getAttribute("username");
         pageContext.setAttribute("username", request.getSession().getAttribute("username"));
         %>
         <h1>Pagina de Participante: ${username}</h1>
@@ -32,7 +33,18 @@
             </thead>
             <tbody>
             <%
-            ArrayList<Auction> auctions = (ArrayList<Auction>)session.getAttribute("auctions");
+            ArrayList<Auction> userAuctions = (ArrayList<Auction>)session.getAttribute("auctions");
+            ArrayList<Auction> allAuctions = (ArrayList<Auction>)getServletContext().getAttribute("auctions");
+            ArrayList<Auction> auctions = new ArrayList<Auction>();
+            if(userAuctions == null) userAuctions = new ArrayList<Auction>();
+            if(allAuctions == null) allAuctions = new ArrayList<Auction>();
+            for(Auction userAuction: userAuctions){
+                for(Auction allAuction: allAuctions){
+                    if(userAuction.getAuctionId() == allAuction.getAuctionId()){
+                        auctions.add(allAuction);
+                    }
+                }
+            }
             if(auctions == null || auctions.size() == 0){
                 %><h3>Nenhum leilão consultado anteriormente.</h3><%
             } else {

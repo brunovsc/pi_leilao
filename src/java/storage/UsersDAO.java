@@ -11,16 +11,16 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 public class UsersDAO {
 
     private static Properties info;
-    private static String dbName = "leilaoDatabase";
-    private static String tableName = "users";
-    private static String host = "localhost";
-    private static int port = 3306;
+    private static final String dbName = "leilaoDatabase";
+    private static final String tableName = "users";
+    private static final String host = "localhost";
+    private static final int port = 3306;
     
     private static UsersDAO usersDAOInstance;
     
@@ -97,8 +97,8 @@ public class UsersDAO {
         if(savedSessions == null){
             savedSessions = new ArrayList<>();
         }
-        savedSessions.add(username);
         request.getSession().setAttribute("username", username);
+        savedSessions.add(username);
         context.setAttribute("savedSessions", savedSessions);        
     }
     

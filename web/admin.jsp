@@ -14,7 +14,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Administrar Leilões</title>
     </head>
     <body>
         <h1>Página de admin</h1>
@@ -31,8 +31,8 @@
             </thead>
             <tbody>
             <%
-            ArrayList<Auction> auctions = AuctionsDAO.getInstance().getAuctions();
-            if(auctions.size() == 0){
+            ArrayList<Auction> auctions = (ArrayList<Auction>)getServletContext().getAttribute("auctions");
+            if(auctions == null || auctions.size() == 0){
                 %><h3>Nenhum leilão registrado.</h3><%
             } else {
                 for(Auction auction : auctions){

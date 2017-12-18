@@ -14,8 +14,8 @@
     </head>
     <body>
         <%
-        session.invalidate();
-        UsersDAO.getInstance().removeSession((String)request.getSession().getAttribute("username"), request);            
+        UsersDAO.getInstance().removeSession((String)request.getSession().getAttribute("username"), request);   
+        session.invalidate();         
         %>
         <h1>Logout realizado com sucesso.</h1>
         <meta http-equiv="Refresh" content="3;url=index.jsp">
